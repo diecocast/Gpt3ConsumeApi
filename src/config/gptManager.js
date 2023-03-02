@@ -1,21 +1,43 @@
 import { Configuration, OpenAIApi } from "openai";
-
+import converter from 'number-to-words'
 export default class GptManager{
-    question = async () => {
-        const configuration = new Configuration({
-            apiKey: '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',
-          });
-          const openai = new OpenAIApi(configuration);
-          
-          async function runCompletion () {
-          const completion = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: "Creame un texto que hale de perros",
-          });
-          console.log(completion.data.choices[0].text);
-          return completion.data.choices[0].text
-          }
-          const text = await runCompletion ()
-          return text
-}
+    memory = "";
+    
+    question = async (input) => {
+        try {
+            const question = input.replace(/\d+/g, (match) => {
+                return converter.toWords(match);
+            });
+
+            const count = question.length;
+
+            const configuration = new Configuration({
+                apiKey: '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',
+            });
+            const openai = new OpenAIApi(configuration);
+    
+            async function runCompletion(input, memory) {
+                const completion = await openai.createCompletion({
+                    model: "text-davinci-003",
+                    prompt: `${memory}\n\n${input}`,
+                    max_tokens: 3000,
+                });
+                return completion.data.choices[0].text;
+            }
+    
+            const text = await runCompletion(question, this.memory);
+            this.memory += `\n\n${question}\n${text}`;
+    
+            const memoryArray = this.memory.split("\n\n");
+            if (memoryArray.length > 10) {
+                memoryArray.shift();
+                memoryArray.shift();
+            }
+            this.memory = memoryArray.join("\n\n");
+            return text;
+        } catch (error) {
+            console.log(error);
+            return "Sorry, there was an error";
+        }
+    };
 }
