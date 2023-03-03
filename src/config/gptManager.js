@@ -12,7 +12,7 @@ export default class GptManager{
             const count = question.length;
 
             const configuration = new Configuration({
-                apiKey: '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',
+                apiKey: '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',
             });
             const openai = new OpenAIApi(configuration);
     
