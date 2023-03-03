@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
 import converter from 'number-to-words'
 export default class GptManager{
-    memory = "";
+    memory = '';
     
     question = async (input) => {
         try {
@@ -12,7 +12,7 @@ export default class GptManager{
             const count = question.length;
 
             const configuration = new Configuration({
-                apiKey: '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',
+                apiKey: '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',
             });
             const openai = new OpenAIApi(configuration);
     
