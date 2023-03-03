@@ -12,7 +12,7 @@ export default class GptManager{
             const count = question.length;
 
             const configuration = new Configuration({
-                apiKey: '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',
+                apiKey: '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',
             });
             const openai = new OpenAIApi(configuration);
     
@@ -37,7 +37,8 @@ export default class GptManager{
             return text;
         } catch (error) {
             console.log(error);
-            return "Sorry, there was an error";
+            this.memory = ''
+            return "No puedo entenderte por favor vulveme a preguntar";
         }
     };
 }
